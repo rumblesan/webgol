@@ -1,4 +1,6 @@
 
+var Board = require ('./board');
+
 var Canvas = {};
 
 Canvas.create = function (canvasEl, columns, rows, cellSize) {
@@ -33,15 +35,30 @@ Canvas.drawCell = function (canvas, column, row, value) {
     }
 };
 
-Canvas.mouse = function (canvas, board, column, row) {
-    var newX, newY, s;
+Canvas.mouse = function (canvas, board, mouseState) {
+    var currentX, currentY, prevX, prevY, s;
     s = canvas.cellSize;
 
-    newX = (column * s) + 5;
-    newY = (row * s) + 5;
+    currentX = (mouseState.column * s) + 5;
+    currentY = (mouseState.row * s) + 5;
+
+    prevX = (mouseState.prevColumn * s) + 5;
+    prevY = (mouseState.prevRow * s) + 5;
+
+    Canvas.drawCell(
+        canvas,
+        mouseState.prevColumn,
+        mouseState.prevRow,
+        Board.getCell(
+            board,
+            mouseState.prevColumn,
+            mouseState.prevRow
+        )
+    );
 
     canvas.ctx.fillStyle = "red";
-    canvas.ctx.fillRect(newX, newY, s - 10, s - 10);
+    canvas.ctx.fillRect(currentX, currentY, s - 10, s - 10);
+
 };
 
 module.exports = Canvas;

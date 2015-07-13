@@ -14,9 +14,11 @@ var config = {
     timer: 500     // miliseconds
 };
 
-var appState = {
-    mouseColumn: -1,
-    mouseRow: -1
+var mouseState = {
+    column: -1,
+    row: -1,
+    prevColumn: -1,
+    prevRow: -1
 };
 
 var board = Board.createRandom(config.columns, config.rows);
@@ -36,14 +38,32 @@ domready(function () {
         Mouse.position(canvas, e, function (x, y) {
             var c = Math.floor(x / canvas.cellSize);
             var r = Math.floor(y / canvas.cellSize);
-            appState.mouseColumn = c;
-            appState.mouseRow = r;
+            if ((c !== mouseState.column) || (r !== mouseState.row)) {
+                mouseState.prevColumn = mouseState.column;
+                mouseState.prevRow = mouseState.row;
+                mouseState.column = c;
+                mouseState.row = r;
+                Canvas.mouse(
+                    canvas,
+                    board,
+                    mouseState
+                );
+            }
         });
     });
 
     canvas.element.addEventListener('mouseout', function (e) {
-        appState.mouseColumn = -1;
-        appState.mouseRow = -1;
+        mouseState.prevColumn = mouseState.column;
+        mouseState.prevRow = mouseState.row;
+        mouseState.column = -1;
+        mouseState.row = -1;
+        Canvas.mouse(
+            canvas,
+            board,
+            mouseState
+        );
+        mouseState.prevColumn = -1;
+        mouseState.prevRow = -1;
     });
 
     canvas.element.addEventListener('click', function (e) {
@@ -60,7 +80,7 @@ domready(function () {
     });
 
     var animate = function () {
-        Display.drawBoard(canvas, board, appState);
+        Display.drawBoard(canvas, board, mouseState);
         board = Board.nextGeneration(board);
     };
 

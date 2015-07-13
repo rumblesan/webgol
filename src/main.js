@@ -8,7 +8,7 @@ var Display = require('./display');
 var Mouse = require('./mouse');
 
 var config = {
-    columns: 10,
+    columns: 20,
     rows: 10,
     cellSize: 30,  // pixels
     timer: 500     // miliseconds
@@ -31,12 +31,26 @@ domready(function () {
 
     canvas.element.width = (config.columns * config.cellSize);
     canvas.element.height = (config.rows * config.cellSize);
+
     canvas.element.addEventListener('mousemove', function (e) {
         Mouse.position(canvas, e, function (x, y) {
             var c = Math.floor(x / canvas.cellSize);
             var r = Math.floor(y / canvas.cellSize);
             appState.mouseColumn = c;
             appState.mouseRow = r;
+        });
+    });
+
+    canvas.element.addEventListener('mouseout', function (e) {
+        appState.mouseColumn = -1;
+        appState.mouseRow = -1;
+    });
+
+    canvas.element.addEventListener('click', function (e) {
+        Mouse.position(canvas, e, function (x, y) {
+            var c = Math.floor(x / canvas.cellSize);
+            var r = Math.floor(y / canvas.cellSize);
+            Board.setCell(board, c, r, 1);
         });
     });
 

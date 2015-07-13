@@ -33,5 +33,16 @@ Canvas.drawCell = function (canvas, column, row, value) {
     }
 };
 
+Canvas.mouse = function (canvas, board, column, row) {
+    var newX, newY, s;
+    s = canvas.cellSize;
+
+    newX = (column * s) + 5;
+    newY = (row * s) + 5;
+
+    canvas.ctx.fillStyle = "red";
+    canvas.ctx.fillRect(newX, newY, s - 10, s - 10);
+};
+
 module.exports = Canvas;
 

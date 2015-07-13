@@ -27,6 +27,8 @@
     "react": "^0.13.3"
   },
   "browserify": {
-      "transform": ["reactify"]
+    "transform": [
+      "reactify"
+    ]
   }
 }

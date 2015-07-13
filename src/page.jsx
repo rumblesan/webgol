@@ -1,11 +1,14 @@
 
 var React = require('react');
 
+var NavBar = require('./navbar.jsx');
+
 var Page = React.createClass({
     render: function () {
         return (
             <div>
-                <canvas id="canvas"></canvas>
+                <NavBar />
+                <div><canvas id="canvas"></canvas></div>
             </div>
         );
     }

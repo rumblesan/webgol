@@ -2,10 +2,14 @@
 
 var domready = require('domready');
 
+var React = require('react');
+
 var Canvas = require('./canvas');
 var Board = require('./board');
 var Display = require('./display');
 var Mouse = require('./mouse');
+
+var Page = require('./page.jsx');
 
 var config = {
     columns: 20,
@@ -24,6 +28,12 @@ var mouseState = {
 var board = Board.createRandom(config.columns, config.rows);
 
 domready(function () {
+
+    React.render(
+        <Page />,
+        document.getElementById('content')
+    );
+
     var canvas = Canvas.create(
         document.getElementById("canvas"),
         config.columns,

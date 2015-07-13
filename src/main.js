@@ -50,7 +50,12 @@ domready(function () {
         Mouse.position(canvas, e, function (x, y) {
             var c = Math.floor(x / canvas.cellSize);
             var r = Math.floor(y / canvas.cellSize);
-            Board.setCell(board, c, r, 1);
+            var v = Board.getCell(board, c, r);
+            if (v === 0) {
+                Board.setCell(board, c, r, 1);
+            } else {
+                Board.setCell(board, c, r, 0);
+            }
         });
     });
 

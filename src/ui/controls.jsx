@@ -14,23 +14,21 @@ var Controls = React.createClass({
     render: function () {
         var running = this.props.running ? 'On' : 'Off';
         return (
-            <div id='header'>
-                <div id='menu'>
-                    <span className='menu-item'>Rumblesan</span>
+            <div id='controls'>
+                <span className='control-item'>Rumblesan</span>
 
-                    <span className='menu-item' onClick={this.toggleRunning}>
-                        Running: {running}
-                    </span>
+                <span className='control-item' onClick={this.toggleRunning}>
+                    Running: {running}
+                </span>
 
-                    <span className='menu-item' onClick={this.toggleRandomise}>
-                        Randomise
-                    </span>
+                <span className='control-item' onClick={this.toggleRandomise}>
+                    Randomise
+                </span>
 
-                    <span className='menu-item' onClick={this.toggleReset}>
-                        Reset
-                    </span>
+                <span className='control-item' onClick={this.toggleReset}>
+                    Reset
+                </span>
 
-                </div>
             </div>
         );
     }

@@ -88,7 +88,9 @@ var App = React.createClass({
     render: function () {
         return (
             <div>
-                <Controls running={this.state.running} controlHandler={this.handleControls}/>
+                <div id={'header'}>
+                    <Controls running={this.state.running} controlHandler={this.handleControls}/>
+                </div>
                 <GameDisplay
                     config={this.props.config}
                     game={this.state.game}

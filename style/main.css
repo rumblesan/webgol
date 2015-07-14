@@ -15,11 +15,15 @@ html, body {
     color: #ffffff;
     padding: 2px;
 }
-#menu {
+#controls {
     font-family: monospace; line-height: 1.4em;
     font-size: 1.2em;
 }
-.menu-item {
+.control-item {
     padding: 5px 10px;
+}
+canvas {
+    display: block;
+    margin: 10px auto;
 }
 

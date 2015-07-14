@@ -7,8 +7,8 @@ var React = require('react');
 var App = require('./app.jsx');
 
 var config = {
-    columns: 20,
-    rows: 10,
+    columns: 48,
+    rows: 32,
     cellSize: 30,  // pixels
     timer: 500     // miliseconds
 };

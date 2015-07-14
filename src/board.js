@@ -39,6 +39,7 @@ Board.setCell = function (board, column, row, value) {
     if ((column < board.columns) && (row < board.rows) && (column >= 0) && (row >= 0)) {
         board.cells[column][row] = value;
     }
+    return board;
 };
 
 Board.getCell = function (board, column, row) {

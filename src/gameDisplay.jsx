@@ -2,71 +2,42 @@
 var React   = require('react');
 
 var Canvas  = require('./canvas');
-var Board   = require('./board');
 var Display = require('./display');
 
 var GameDisplay = React.createClass({
     getInitialState: function () {
         return {
-            mouse: { column: -1, row: -1 },
             canvas: Canvas.create(
                 this.props.config.columns,
                 this.props.config.rows,
                 this.props.config.cellSize
-            ),
-            board: this.props.board
+            )
         };
-    },
-    componentDidMount: function () {
-        this.evolve();
-        setInterval(this.evolve, this.props.config.timer);
     },
     componentDidUpdate: function () {
         Display.drawBoard(
             this.state.canvas,
             this.getDOMNode().getContext('2d'),
-            this.state.board,
-            this.state.mouse
+            this.props.board,
+            this.props.mouse
         );
     },
     handleMouseMove: function (event) {
-        var rect = this.getDOMNode().getBoundingClientRect();
-        var x = event.clientX - rect.left;
-        var y = event.clientY - rect.top;
-        var c = Math.floor(x / this.props.config.cellSize);
-        var r = Math.floor(y / this.props.config.cellSize);
-        if ((c !== this.state.mouse.column) || (r !== this.state.mouse.row)) {
-            this.setState({
-                mouse: { column: c, row: r }
-            });
-        }
+        var node = this.getDOMNode();
+        var rect = node.getBoundingClientRect();
+        var xPos = (event.clientX - rect.left) / node.width;
+        var yPos = (event.clientY - rect.top) / node.height;
+        this.props.handleMouse(xPos, yPos);
     },
     handleMouseOut: function (event) {
-        this.setState({
-            mouse: { column: -1, row: -1 }
-        });
+        this.props.handleMouse(null, null);
     },
     handleClick: function (event) {
-        var rect = this.getDOMNode().getBoundingClientRect();
-        var x = event.clientX - rect.left;
-        var y = event.clientY - rect.top;
-        var c = Math.floor(x / this.props.config.cellSize);
-        var r = Math.floor(y / this.props.config.cellSize);
-        var v = Board.getCell(this.state.board, c, r);
-        var newBoard;
-        if (v === 0) {
-            newBoard = Board.setCell(this.state.board, c, r, 1);
-        } else {
-            newBoard = Board.setCell(this.state.board, c, r, 0);
-        }
-        this.setState({
-            board: newBoard
-        });
-    },
-    evolve: function () {
-        this.setState({
-            board: Board.nextGeneration(this.state.board)
-        });
+        var node = this.getDOMNode();
+        var rect = node.getBoundingClientRect();
+        var xPos = (event.clientX - rect.left) / node.width;
+        var yPos = (event.clientY - rect.top) / node.height;
+        this.props.handleClick(xPos, yPos);
     },
     render: function () {
         return (
@@ -82,5 +53,4 @@ var GameDisplay = React.createClass({
 });
 
 module.exports = GameDisplay;
-
 

@@ -6,7 +6,7 @@ var NavBar = React.createClass({
         return (
             <div id='header'>
                 <div id='menu'>
-                    <span class='menu-item'>Rumblesan</span>
+                    <span className='menu-item'>Rumblesan</span>
                 </div>
             </div>
         );
@@ -14,5 +14,4 @@ var NavBar = React.createClass({
 });
 
 module.exports = NavBar;
-
 

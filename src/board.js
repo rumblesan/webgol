@@ -20,11 +20,10 @@ Board.create = function (columns, rows) {
     return board;
 };
 
-Board.createRandom = function (columns, rows) {
-    var board = Board.create(columns, rows);
+Board.randomise = function (board) {
     var x, y, v;
-    for (x = 0; x < columns; x += 1) {
-        for (y = 0; y < rows; y += 1) {
+    for (x = 0; x < board.columns; x += 1) {
+        for (y = 0; y < board.rows; y += 1) {
             if (Math.random() > 0.5) {
                 board.cells[x][y] = 1;
             } else {

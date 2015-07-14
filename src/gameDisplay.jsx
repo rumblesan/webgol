@@ -7,7 +7,6 @@ var Display = require('./display');
 
 var GameDisplay = React.createClass({
     getInitialState: function () {
-        var board = Board.create(this.props.config.columns, this.props.config.rows);
         return {
             mouse: { column: -1, row: -1 },
             canvas: Canvas.create(
@@ -15,7 +14,7 @@ var GameDisplay = React.createClass({
                 this.props.config.rows,
                 this.props.config.cellSize
             ),
-            board: Board.randomise(board)
+            board: this.props.board
         };
     },
     componentDidMount: function () {

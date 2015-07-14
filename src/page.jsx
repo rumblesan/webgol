@@ -2,13 +2,14 @@
 var React = require('react');
 
 var NavBar = require('./navbar.jsx');
+var GameDisplay = require('./gameDisplay.jsx');
 
 var Page = React.createClass({
     render: function () {
         return (
             <div>
                 <NavBar />
-                <div><canvas id="canvas"></canvas></div>
+                <GameDisplay config={this.props.config}/>
             </div>
         );
     }

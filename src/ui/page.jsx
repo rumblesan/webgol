@@ -1,7 +1,7 @@
 
 var React = require('react');
 
-var Board = require('./board');
+var Board = require('../board');
 
 var NavBar = require('./navbar.jsx');
 var GameDisplay = require('./gameDisplay.jsx');

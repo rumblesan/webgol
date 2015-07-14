@@ -1,7 +1,7 @@
 
 var React   = require('react');
 
-var Canvas  = require('./canvas');
+var Canvas  = require('../canvas');
 
 var GameDisplay = React.createClass({
     getInitialState: function () {

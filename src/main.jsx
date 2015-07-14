@@ -4,7 +4,7 @@ var domready = require('domready');
 
 var React = require('react');
 
-var Page = require('./page.jsx');
+var Page = require('./ui/page.jsx');
 
 var config = {
     columns: 20,

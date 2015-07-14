@@ -2,20 +2,24 @@
 var React   = require('react');
 
 var Canvas  = require('./canvas');
-var Display = require('./display');
 
 var GameDisplay = React.createClass({
     getInitialState: function () {
         return {
+            canvas: null
+        };
+    },
+    componentDidMount: function () {
+        this.setState({
             canvas: Canvas.create(
                 this.props.config.columns,
                 this.props.config.rows,
                 this.props.config.cellSize
             )
-        };
+        });
     },
     componentDidUpdate: function () {
-        Display.drawBoard(
+        Canvas.drawBoard(
             this.state.canvas,
             this.getDOMNode().getContext('2d'),
             this.props.board,

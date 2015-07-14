@@ -34,6 +34,10 @@ Board.randomise = function (board) {
     return board;
 };
 
+Board.reset = function (board) {
+    return Board.create(board.columns, board.rows);
+};
+
 Board.setCell = function (board, column, row, value) {
     if ((column < board.columns) && (row < board.rows) && (column >= 0) && (row >= 0)) {
         board.cells[column][row] = value;

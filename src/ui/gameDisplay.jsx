@@ -19,10 +19,10 @@ var GameDisplay = React.createClass({
         });
     },
     componentDidUpdate: function () {
-        Canvas.drawBoard(
+        Canvas.drawGame(
             this.state.canvas,
             this.getDOMNode().getContext('2d'),
-            this.props.board,
+            this.props.game,
             this.props.mouse
         );
     },

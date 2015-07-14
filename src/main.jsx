@@ -4,7 +4,7 @@ var domready = require('domready');
 
 var React = require('react');
 
-var Page = require('./ui/page.jsx');
+var App = require('./app.jsx');
 
 var config = {
     columns: 20,
@@ -16,7 +16,7 @@ var config = {
 domready(function () {
 
     React.render(
-        <Page config={config} />,
+        <App config={config} />,
         document.getElementById('content')
     );
 

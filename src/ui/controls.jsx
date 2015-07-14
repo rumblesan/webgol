@@ -1,15 +1,15 @@
 
 var React = require('react');
 
-var NavBar = React.createClass({
+var Controls = React.createClass({
     toggleRunning: function () {
-        this.props.controls('running');
+        this.props.controlHandler('running');
     },
     toggleRandomise: function () {
-        this.props.controls('randomise');
+        this.props.controlHandler('randomise');
     },
     toggleReset: function () {
-        this.props.controls('reset');
+        this.props.controlHandler('reset');
     },
     render: function () {
         var running = this.props.running ? 'On' : 'Off';
@@ -36,5 +36,5 @@ var NavBar = React.createClass({
     }
 });
 
-module.exports = NavBar;
+module.exports = Controls;
 

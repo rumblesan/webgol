@@ -1,16 +1,16 @@
 
 var React = require('react');
 
-var Board = require('../board');
+var Conway = require('./conway');
 
-var NavBar = require('./navbar.jsx');
-var GameDisplay = require('./gameDisplay.jsx');
+var Controls = require('./ui/controls.jsx');
+var GameDisplay = require('./ui/gameDisplay.jsx');
 
-var Page = React.createClass({
+var App = React.createClass({
     getInitialState: function () {
         return {
             mouse: { column: -1, row: -1 },
-            board: Board.create(
+            game: Conway.create(
                 this.props.config.columns,
                 this.props.config.rows
             ),
@@ -21,8 +21,8 @@ var Page = React.createClass({
     handleDisplayMouse: function (xPos, yPos) {
         var newCol, newRow;
         if (xPos !== null && yPos !== null) {
-            newCol = Math.floor(xPos * this.state.board.columns);
-            newRow = Math.floor(yPos * this.state.board.rows);
+            newCol = Math.floor(xPos * this.state.game.columns);
+            newRow = Math.floor(yPos * this.state.game.rows);
         } else {
             newCol = -1;
             newRow = -1;
@@ -36,17 +36,17 @@ var Page = React.createClass({
         }
     },
     handleDisplayClick: function (xPos, yPos) {
-        var c = Math.floor(xPos * this.state.board.columns);
-        var r = Math.floor(yPos * this.state.board.rows);
-        var v = Board.getCell(this.state.board, c, r);
-        var newBoard;
+        var c = Math.floor(xPos * this.state.game.columns);
+        var r = Math.floor(yPos * this.state.game.rows);
+        var v = Conway.getCell(this.state.game, c, r);
+        var newGame;
         if (v === 0) {
-            newBoard = Board.setCell(this.state.board, c, r, 1);
+            newGame = Conway.setCell(this.state.game, c, r, 1);
         } else {
-            newBoard = Board.setCell(this.state.board, c, r, 0);
+            newGame = Conway.setCell(this.state.game, c, r, 0);
         }
         this.setState({
-            board: newBoard
+            game: newGame
         });
     },
     handleControls: function (control) {
@@ -55,10 +55,10 @@ var Page = React.createClass({
                 this.toggleAnimation();
                 break;
             case 'randomise':
-                this.setState({board: Board.randomise(this.state.board)});
+                this.setState({game: Conway.randomise(this.state.game)});
                 break;
             case 'reset':
-                this.setState({board: Board.reset(this.state.board)});
+                this.setState({game: Conway.reset(this.state.game)});
                 break;
             default:
                 console.log('Unknown control');
@@ -82,16 +82,16 @@ var Page = React.createClass({
     },
     evolve: function () {
         this.setState({
-            board: Board.nextGeneration(this.state.board)
+            game: Conway.nextGeneration(this.state.game)
         });
     },
     render: function () {
         return (
             <div>
-                <NavBar running={this.state.running} controls={this.handleControls}/>
+                <Controls running={this.state.running} controlHandler={this.handleControls}/>
                 <GameDisplay
                     config={this.props.config}
-                    board={this.state.board}
+                    game={this.state.game}
                     mouse={this.state.mouse}
                     handleMouse={this.handleDisplayMouse}
                     handleClick={this.handleDisplayClick}
@@ -101,5 +101,5 @@ var Page = React.createClass({
     }
 });
 
-module.exports = Page;
+module.exports = App;
 

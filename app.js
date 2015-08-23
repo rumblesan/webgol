@@ -19826,7 +19826,7 @@ var App = React.createClass({displayName: "App",
                 this.props.config.rows
             ),
             running: false,
-            animationTimer: null
+            speed: this.props.config.startingSpeed
         };
     },
     handleDisplayMouse: function (xPos, yPos) {
@@ -19871,24 +19871,36 @@ var App = React.createClass({displayName: "App",
             case 'reset':
                 this.setState({game: Conway.reset(this.state.game)});
                 break;
+            case 'step':
+                this.evolve();
+                break;
+            case 'speedup':
+                if (this.state.speed < this.props.config.maxSpeed) {
+                    this.setState({speed: this.state.speed + 1});
+                }
+                break;
+            case 'slowdown':
+                if (this.state.speed > this.props.config.minSpeed) {
+                    this.setState({speed: this.state.speed - 1});
+                }
+                break;
             default:
                 console.log('Unknown control');
         }
     },
     toggleAnimation: function () {
-        if (this.state.animationTimer !== null) {
-            clearInterval(this.state.animationTimer);
-        }
+        this.setState(
+            function () {
+                return { running: (!this.state.running) };
+            },
+            this.animate
+        );
+    },
+    animate: function () {
         if (this.state.running) {
-            this.setState({
-                running: false,
-                animationTimer: null
-            });
-        } else {
-            this.setState({
-                running: true,
-                animationTimer: setInterval(this.evolve, this.props.config.timer)
-            });
+            this.evolve();
+            var t = (1 / this.state.speed) * 1000;
+            setTimeout(this.animate, t);
         }
     },
     evolve: function () {
@@ -19900,7 +19912,11 @@ var App = React.createClass({displayName: "App",
         return (
             React.createElement("div", null, 
                 React.createElement("div", {id: 'header'}, 
-                    React.createElement(Controls, {running: this.state.running, controlHandler: this.handleControls})
+                    React.createElement(Controls, {
+                        running: this.state.running, 
+                        controlHandler: this.handleControls, 
+                        speed: this.state.speed}
+                    )
                 ), 
                 React.createElement(GameDisplay, {
                     config: this.props.config, 
@@ -20101,7 +20117,9 @@ var config = {
     columns: 48,
     rows: 32,
     cellSize: 30,  // pixels
-    timer: 500     // miliseconds
+    maxSpeed: 20,
+    startingSpeed: 10,
+    minSpeed: 1
 };
 
 domready(function () {
@@ -20129,14 +20147,40 @@ var Controls = React.createClass({displayName: "Controls",
     toggleReset: function () {
         this.props.controlHandler('reset');
     },
+    singleStep: function () {
+        this.props.controlHandler('step');
+    },
+    speedUp: function () {
+        this.props.controlHandler('speedup');
+    },
+    slowDown: function () {
+        this.props.controlHandler('slowdown');
+    },
     render: function () {
         var running = this.props.running ? 'On' : 'Off';
+        var speed = this.props.speed;
         return (
             React.createElement("div", {id: "controls"}, 
                 React.createElement("span", {className: "control-item"}, "Rumblesan"), 
 
                 React.createElement("span", {className: "control-item", onClick: this.toggleRunning}, 
                     "Running: ", running
+                ), 
+
+                React.createElement("span", {className: "control-item"}, 
+                    React.createElement("button", {onClick: this.slowDown}, "-"), 
+                    React.createElement("span", {className: "numeric-text"}, 
+                        this.props.speed
+                    ), 
+                    React.createElement("button", {onClick: this.speedUp}, "+")
+                ), 
+
+                React.createElement("span", {className: "control-item", onClick: this.toggleRunning}, 
+                    "Running: ", running
+                ), 
+
+                React.createElement("span", {className: "control-item", onClick: this.singleStep}, 
+                    "Step"
                 ), 
 
                 React.createElement("span", {className: "control-item", onClick: this.toggleRandomise}, 

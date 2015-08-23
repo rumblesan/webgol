@@ -15,7 +15,7 @@ var App = React.createClass({
                 this.props.config.rows
             ),
             running: false,
-            animationTimer: null
+            speed: this.props.config.startingSpeed
         };
     },
     handleDisplayMouse: function (xPos, yPos) {
@@ -60,24 +60,36 @@ var App = React.createClass({
             case 'reset':
                 this.setState({game: Conway.reset(this.state.game)});
                 break;
+            case 'step':
+                this.evolve();
+                break;
+            case 'speedup':
+                if (this.state.speed < this.props.config.maxSpeed) {
+                    this.setState({speed: this.state.speed + 1});
+                }
+                break;
+            case 'slowdown':
+                if (this.state.speed > this.props.config.minSpeed) {
+                    this.setState({speed: this.state.speed - 1});
+                }
+                break;
             default:
                 console.log('Unknown control');
         }
     },
     toggleAnimation: function () {
-        if (this.state.animationTimer !== null) {
-            clearInterval(this.state.animationTimer);
-        }
+        this.setState(
+            function () {
+                return { running: (!this.state.running) };
+            },
+            this.animate
+        );
+    },
+    animate: function () {
         if (this.state.running) {
-            this.setState({
-                running: false,
-                animationTimer: null
-            });
-        } else {
-            this.setState({
-                running: true,
-                animationTimer: setInterval(this.evolve, this.props.config.timer)
-            });
+            this.evolve();
+            var t = (1 / this.state.speed) * 1000;
+            setTimeout(this.animate, t);
         }
     },
     evolve: function () {
@@ -89,7 +101,11 @@ var App = React.createClass({
         return (
             <div>
                 <div id={'header'}>
-                    <Controls running={this.state.running} controlHandler={this.handleControls}/>
+                    <Controls
+                        running={this.state.running}
+                        controlHandler={this.handleControls}
+                        speed={this.state.speed}
+                    />
                 </div>
                 <GameDisplay
                     config={this.props.config}

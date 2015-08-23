@@ -10,7 +10,9 @@ var config = {
     columns: 48,
     rows: 32,
     cellSize: 30,  // pixels
-    timer: 500     // miliseconds
+    maxSpeed: 20,
+    startingSpeed: 10,
+    minSpeed: 1
 };
 
 domready(function () {
